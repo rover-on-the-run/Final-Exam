@@ -60,6 +60,6 @@ function loadMeal (data){
 
    
 
-    container.appendChild(newDiv);
+    
 
 }
