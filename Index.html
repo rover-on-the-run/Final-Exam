@@ -1,0 +1,147 @@
+<html>
+   <head>
+       <title>Covid-19 Info</title>
+       <link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+   </head> 
+   <body onload="fetch()">
+
+    <header class="header">
+        <nav class="navbar nabar-style">
+
+            <div class="container">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#micon">
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href=""><img class="logo" src="logo.png"></a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="micon">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="https://www.instagram.com/rover_on_the_run_">Gallery</a></li>
+                    <li><a href="https://www.facebook.com/rover.on.the.run">Contact</a></li>
+
+                </ul>
+            </div>
+            </div>
+        </nav>
+
+        <div class="container">
+           
+                
+                    <h1 class="text-center big-text mt-5">Covid 19 Live Repost</h1>
+                    
+                    <table class="table table-responsive table-hover table-dark">
+                      <thead>
+                        <tr>
+                          
+                          <th scope="col">Total Cases</th>
+                          <th scope="col">Total Deaths</th>
+                          <th scope="col">Total Recovered</th>
+                        </tr>
+                      </thead>
+                      <tbody id="data">
+                       
+                      </tbody>
+                    </table>
+                    <br>
+                    <button onclick="refreshData()" class="btn btn-danger btn-block">
+                      Refresh Data
+                    </button>
+                    <br>
+
+                    <table class="table table-responsive table-hover table-dark" id="tblval">
+                      
+                        <tr>
+                          
+                          <th scope="col">Country</th>
+                          <th scope="col">Total Confirmed</th>
+                          <th scope="col">Total Recovered</th>
+                          <th scope="col">Total Deaths</th>
+                          <th scope="col">New Recovered</th>
+                          <th scope="col">New Deaths</th>
+                        </tr>
+                     
+                      
+                    </table>
+                
+                
+           
+        </div>
+
+    </header>
+     
+      
+      
+   </body>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <script>
+     
+       init()
+
+
+       function init(){
+         var url="https://api.covid19api.com/summary"
+         var data=''
+         $.get(url,function(data){
+           console.log(data)
+           data=`
+           <td>${data.Global.TotalConfirmed}</td>
+           <td>${data.Global.TotalDeaths}</td>
+           <td>${data.Global.TotalRecovered}</td>
+
+           `
+           $("#data").html(data)
+
+         })
+       }
+
+     function refreshData(){
+         clearData()
+       }
+       function clearData(){
+         $("#data").empty()
+         init()
+       }
+
+       function fetch(){
+         $.get("https://api.covid19api.com/summary",
+         
+         function(data){
+           //console.log(data2['Countries'].length)
+
+          var tblval=document.getElementById('tblval');
+
+          for(var i=1; i<data['Countries'].length; i++){
+            var x=tblval.insertRow();
+
+            x.insertCell(0);
+            tblval.rows[i].cells[0].innerHTML=data['Countries'][i-1]['Country'];
+
+            x.insertCell(1);
+            tblval.rows[i].cells[1].innerHTML=data['Countries'][i-1]['TotalConfirmed'];
+            x.insertCell(2);
+            tblval.rows[i].cells[2].innerHTML=data['Countries'][i-1]['TotalRecovered'];
+            x.insertCell(3);
+            tblval.rows[i].cells[3].innerHTML=data['Countries'][i-1]['TotalDeaths'];
+            x.insertCell(4);
+            tblval.rows[i].cells[4].innerHTML=data['Countries'][i-1]['NewRecovered'];
+            x.insertCell(5);
+            tblval.rows[i].cells[5].innerHTML=data['Countries'][i-1]['NewDeaths'];
+          }
+
+
+         }
+         )
+       }
+       
+   </script>
+</html>
